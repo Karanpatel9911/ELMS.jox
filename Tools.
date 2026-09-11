@@ -1,0 +1,39 @@
+HTML5 (Structure & Semantics)
+CSS3 (Styling, Design System, Animations & Transitions)
+JavaScript (ES6+) (Logic, Multi-Agent AI Algorithms, Particle Physics, DOM, Storage)
+1. HTML5 ke Features aur Unka Use:
+HTML5 Feature	Project me kahan aur kyun use hua?
+Semantic Layout Elements (<header>, <nav>, <section>, <main>, <canvas>)	Page ko clean, accessible aur SEO-friendly banane ke liye. <div> ki bheed ke badle meaningful structure diya gaya.
+HTML5 Canvas 2D API (<canvas id="leavesCanvas">)	Background me girte hue natural patton (falling leaves) ko hardware-accelerated 60fps render karne ke liye.
+Inline Vector Graphics (SVG) (<svg>, <path>)	Leaf logo, sailboats, aur user icons ke liye. Isse mojibake/corrupt text (ðŸ) ka risk 0% ho gaya aur sabhi screen sizes par icons bina phate crystal-clear sharp dikhte hain.
+Advanced Form Input Attributes (type="date", min, required, placeholder)	Leave duration pickers me calendar kholne aur validation ensure karne ke liye.
+Viewport Meta Tag (<meta name="viewport" ...>)	Page ko mobile, tablet aur desktop sabhi devices par automatically adapt (responsive) karne ke liye.
+Modal Dialog Containers (<div class="modal-backdrop">)	"Overview" aur "About" popups ko screen ke center me blur background ke sath show karne ke liye.
+
+2. CSS3 ke Features aur Unka Use:
+CSS3 Feature	Project me kahan aur kyun use hua?
+CSS Custom Properties (Variables) (:root { --primary-teal, --glass-marine-bg, ... })	Poore project ka theme ek jagah se control karne ke liye. Colors, border-radii aur animation timings ko maintain karna aasan banaya.
+Glassmorphism & Backdrop Filter (backdrop-filter: blur(24px), -webkit-backdrop-filter)	Deep oceanic frosted glass effect banane ke liye taki peeche ki coastal scenery subtle tarike se jhalakti rahe aur cards "fika-fika" na lagein.
+Complex Gradients (linear-gradient, radial-gradient)	Sun-glow, ocean sparkles, background overlay, jewel-toned marine cards, aur buttons me rich depth laane ke liye.
+CSS3 Keyframe Animations (@keyframes)	• scenicBreathe: Background image ko gentle breathing motion deta hai.
+• cloudDrift: Badal ko aasman me slow drift karata hai.
+• flapLeft / flapRight: Seagull pakshiyon ke pankh hilata hai.
+• sunPulse: Suraj ke glow ko dhimi dhimi roshni me chamkata hai.
+Cubic-Bezier Easing (cubic-bezier(0.16, 1, 0.3, 1))	Options par click karne par abrupt jhatka na lage, balki ek luxury slow aur smooth cinematic opening transition mile.
+CSS Flexbox & CSS Grid (display: grid, display: flex)	Two-column responsive dashboard layout, KPI stat cards grid, aur header navigation ko cleanly align karne ke liye.
+Pseudo-elements (::before, ::after)	Card ke top par colorful iridescent strip banane aur custom select dropdown arrows render karne ke liye.
+Media Queries (@media (max-width: 768px))	Mobile screens par automatic single-column layout switch karne ke liye.
+3. JavaScript (ES6+) ke Features aur Unka Use:
+JavaScript Feature	Project me kahan aur kyun use hua?
+Canvas 2D Particle Engine (requestAnimationFrame, bezierCurveTo)	Math trigonometric functions (Math.sin(), Math.random()) use karke natural hawa ke bahav me lehrate hue leaves particles simulate kiye.
+ES6 Modern Syntax (const/let, Arrow Functions () => {}, Template Literals `...`)	Clean, readable aur fast execution code ke liye.
+Array Higher-Order Methods (.filter(), .map(), .reduce(), .some())	• .filter(): Pending/Approved/Rejected leaves filter karne me.
+• .some(): Leave validation me date overlap aur keyword sentiment search me.
+• .reduce(): Average AI confidence score calculate karne me.
+Web Storage API (LocalStorage) (localStorage.setItem, getItem)	User login state, leaves data, aur audit trail ko browser me permanently save rakhne ke liye bina kisi external database ke.
+Date Object API (new Date(), .toLocaleTimeString())	Real-time live digital clock chalane aur Leave duration (days count) accurately compute karne ke liye.
+Regular Expressions (RegExp) (/^[A-Za-z0-9\s.,'!?()\-]+$/)	Security validation ke liye taki script injection ruke aur employee normal English sentences, dates aur punctuation bina kisi error ke type kar sake.
+Multi-Agent AI Simulation Logic:	1. Leave Validation Agent: Policy compliance, duration check, keyword match aur confidence score calculate karta hai.
+2. Approval Recommendation Agent: Weighted decision matrix se Human-in-the-Loop suggestion (Approve/Review/Reject) nikalta hai.
+3. Analytics Agent: Charts aur KPI statistical distribution generate karta hai.
+Audit Ledger Logging (logAudit())	Immutable chronological timeline maintain karta hai jisme har action (who, when, what) log hoti hai.
