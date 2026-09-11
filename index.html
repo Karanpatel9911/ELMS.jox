@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeaveMate — Intelligent Employee Leave Management</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Caveat & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ANIMATED BACKGROUND SCENERY -->
+  <div class="scenery-container" id="sceneryBg">
+    <div class="scenic-backdrop"></div>
+    <div class="backdrop-overlay"></div>
+
+    <div class="sun-glow"></div>
+    <div class="ocean-sparkles"></div>
+
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <div class="bird bird-1">
+      <div class="wing wing-left"></div>
+      <div class="wing wing-right"></div>
+    </div>
+    <div class="bird bird-2">
+      <div class="wing wing-left"></div>
+      <div class="wing wing-right"></div>
+    </div>
+    <div class="bird bird-3">
+      <div class="wing wing-left"></div>
+      <div class="wing wing-right"></div>
+    </div>
+
+    <!-- Sailboats (Clean SVG) -->
+    <svg class="sailboat sailboat-1" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+      <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"/>
+      <path d="M4 18 12 3v15"/>
+      <path d="m12 11 6 7"/>
+    </svg>
+    <svg class="sailboat sailboat-2" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+      <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"/>
+      <path d="M4 18 12 3v15"/>
+      <path d="m12 11 6 7"/>
+    </svg>
+
+    <canvas id="leavesCanvas"></canvas>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- GLOBAL APP HEADER -->
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="#" class="brand-logo" onclick="goHome(event)">
+        <svg class="logo-leaf-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+        <span class="brand-name">LeaveMate</span>
+        <span class="brand-badge">Enterprise AI</span>
+      </a>
+
+      <nav class="nav-links" id="mainNav">
+        <a href="#homeSection" class="nav-link active" onclick="scrollToSection('homeSection')">Home</a>
+        <a href="#leaveSection" class="nav-link" id="navLeavesLink" onclick="scrollToSection('leaveSection')">Leaves</a>
+        <a href="javascript:void(0)" class="nav-link" id="navOverviewLink" onclick="openOverviewModal()">Overview</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="openAboutModal()">About</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="clock-pill" title="Current Local Time">
+          <span class="clock-label">Time:</span>
+          <span class="clock-display" id="clock">00:00:00</span>
+        </div>
+
+        <div class="auth-buttons" id="guestAuthGroup">
+          <button type="button" class="btn btn-outline" onclick="openLogin('user')">
+            <span>User Login</span>
+          </button>
+          <button type="button" class="btn btn-primary" onclick="openLogin('admin')">
+            <span>Admin Portal</span>
+          </button>
+        </div>
+
+        <div class="user-profile-menu hidden" id="userProfileMenu">
+          <div class="user-badge" onclick="toggleMenu('userDropdown')">
+            <div class="user-avatar" id="headerUserAvatar">U</div>
+            <div class="user-info-text">
+              <span class="user-name" id="headerUserName">Employee</span>
+              <span class="user-role" id="headerUserRole">User</span>
+            </div>
+            <span class="dropdown-chevron">&dtrif;</span>
+          </div>
+
+          <div class="menu-dropdown" id="userDropdown">
+            <div class="dropdown-item" id="adminAnalyticsMenuOption" onclick="toggleAnalytics()">
+              <span>Analytics Agent</span>
+            </div>
+            <div class="dropdown-item" id="adminAuditMenuOption" onclick="toggleAuditLog()">
+              <span>Global Audit Trail</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item text-danger" onclick="logout()">
+              <span>Sign Out</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE 1: WELCOME & HERO LANDING -->
+  <section id="welcomePage" class="page active-page">
+    <div class="hero-container" id="homeSection">
+      <div class="hero-content">
+        <div class="holiday-pill">
+          <span class="pulse-dot"></span> Smart Work-Life Balance
+        </div>
+
+        <h1 class="hero-title">
+          Take a Break
+        </h1>
+
+        <p class="hero-subtitle">
+          Manage your leaves, enjoy your time.
+        </p>
+
+        <p class="hero-desc">
+          Automated AI validation, transparent approval recommendations, and intelligent leave insights designed for modern workplace harmony.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-hero" onclick="openLogin('user')">
+            <span>Apply Leave &rarr;</span>
+          </button>
+          <button class="btn btn-hero-secondary" onclick="openLogin('admin')">
+            <span>Admin Review</span>
+          </button>
+        </div>
+
+        <div class="road-signs-widget">
+          <div class="sign-item sign-1" onclick="openOverviewModal()">
+            <div class="sign-bullet"></div>
+            <div class="sign-text">
+              <strong>New Places</strong>
+              <small>Click to see project overview</small>
+            </div>
+          </div>
+          <div class="sign-item sign-2" onclick="openOverviewModal()">
+            <div class="sign-bullet"></div>
+            <div class="sign-text">
+              <strong>Happier You</strong>
+              <small>Recharge your spirit</small>
+            </div>
+          </div>
+          <div class="sign-item sign-3" onclick="openOverviewModal()">
+            <div class="sign-bullet"></div>
+            <div class="sign-text">
+              <strong>Good Work Today</strong>
+              <small>You have earned this pause</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Rich Login Card -->
+      <div class="hero-auth-card">
+        <div class="glass-card login-card" id="loginCard">
+          <div class="login-header">
+            <div class="login-tab-pill">
+              <button type="button" class="tab-btn active" id="tabUserBtn" onclick="switchLoginTab('user')">
+                Employee
+              </button>
+              <button type="button" class="tab-btn" id="tabAdminBtn" onclick="switchLoginTab('admin')">
+                HR Admin
+              </button>
+            </div>
+            <h3 class="login-title" id="loginHeading">Sign in to LeaveMate</h3>
+            <p class="login-sub" id="loginSubheading">Access your personal leave balance and history</p>
+          </div>
+
+          <!-- ADMIN QUICK DEMO LOGIN HINT -->
+          <div class="demo-hint hidden" id="adminDemoHint">
+            <div class="demo-hint-content">
+              <span class="hint-badge">Instant Demo</span>
+              <p>Skip manual typing with pre-filled administrative credentials.</p>
+            </div>
+            <button type="button" class="btn btn-demo" onclick="quickAdminLogin()">
+              <span>Quick Admin Login (admin123)</span>
+            </button>
+          </div>
+
+          <div class="login-form">
+            <div class="form-group">
+              <label for="loginUsername">Username / Employee ID</label>
+              <div class="input-wrapper">
+                <input type="text" id="loginUsername" placeholder="e.g. john.doe or admin123" autocomplete="username">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Secure Password</label>
+              <div class="input-wrapper">
+                <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-block btn-lg" onclick="loginUser()">
+              <span id="loginBtnText">Access Employee Portal</span>
+            </button>
+          </div>
+
+          <div class="login-footer">
+            <span>Seamless HR and Employee Collaboration</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: EMPLOYEE DASHBOARD -->
+  <section id="employeePage" class="page hidden">
+    <div class="dashboard-wrapper">
+      
+      <div class="dashboard-banner glass-card">
+        <div class="banner-left">
+          <span class="welcome-tag">Employee Workspace</span>
+          <h2 class="banner-greeting">Welcome back, <span id="employeeDisplayName">Team Member</span>!</h2>
+          <p class="banner-desc">Plan your time off, review automated AI validation checks, and track your request history.</p>
+        </div>
+        <div class="banner-stats" id="statsSection">
+          <div class="mini-stat">
+            <span class="stat-num" id="empStatTotal">0</span>
+            <span class="stat-lbl">Total Applied</span>
+          </div>
+          <div class="mini-stat text-success">
+            <span class="stat-num" id="empStatApproved">0</span>
+            <span class="stat-lbl">Approved</span>
+          </div>
+          <div class="mini-stat text-warning">
+            <span class="stat-num" id="empStatPending">0</span>
+            <span class="stat-lbl">Pending</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        
+        <!-- Leave Application Form -->
+        <div class="grid-col form-col" id="leaveSection">
+          <div class="glass-card leave-form-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Apply for Leave</h3>
+                <p class="card-subtitle">AI Validation Agent will verify your request automatically</p>
+              </div>
+            </div>
+
+            <form id="leaveForm" novalidate>
+              <div class="form-group">
+                <label for="name">
+                  <span>Employee Full Name</span>
+                  <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                <small class="field-hint">Only characters and standard spaces allowed</small>
+              </div>
+
+              <div class="form-group">
+                <label for="leaveType">
+                  <span>Leave Category</span>
+                  <span class="required-star">*</span>
+                </label>
+                <div class="select-wrapper">
+                  <select id="leaveType" required>
+                    <option value="" disabled selected>Select reason category...</option>
+                    <option value="Medical Leave">Medical Leave (High Priority)</option>
+                    <option value="Urgent Work">Urgent Work</option>
+                    <option value="Family Function">Family Function</option>
+                    <option value="Personal Work">Personal Work</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="date-row">
+                <div class="form-group flex-1">
+                  <label for="fromDate">
+                    <span>From Date</span>
+                    <span class="required-star">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="date" id="fromDate" required>
+                  </div>
+                </div>
+
+                <div class="form-group flex-1">
+                  <label for="toDate">
+                    <span>To Date</span>
+                    <span class="required-star">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="date" id="toDate" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="duration-badge-row hidden" id="durationPreviewRow">
+                <span class="duration-pill" id="durationPreviewText">1 Day Selected</span>
+              </div>
+
+              <div class="form-group">
+                <label for="reason">
+                  <span>Reason Description</span>
+                  <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <textarea id="reason" rows="3" placeholder="Provide details (e.g. Doctor visit, wedding on 15th, family function)..." required></textarea>
+                </div>
+                <small class="field-hint">Include clear reason keywords for optimal AI confidence score</small>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg submit-leave-btn">
+                <span>Submit Leave Application</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- My Leave History -->
+        <div class="grid-col list-col">
+          <div class="glass-card leave-history-card">
+            <div class="card-header justify-between">
+              <div>
+                <h3 class="card-title">My Leave History</h3>
+                <p class="card-subtitle">Real-time status, Explainable AI insights and audit logs</p>
+              </div>
+              <div class="filter-pills" id="empFilterPills">
+                <button type="button" class="filter-btn active" onclick="filterUserLeaves('all')">All</button>
+                <button type="button" class="filter-btn" onclick="filterUserLeaves('pending')">Pending</button>
+                <button type="button" class="filter-btn" onclick="filterUserLeaves('approved')">Approved</button>
+                <button type="button" class="filter-btn" onclick="filterUserLeaves('rejected')">Rejected</button>
+              </div>
+            </div>
+
+            <div id="userEmptyState" class="empty-state hidden">
+              <h4>No leave requests found</h4>
+              <p>You haven't submitted any leave applications yet. Fill the form on the left to apply.</p>
+            </div>
+
+            <div id="leaveList" class="leave-cards-container"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3: HR ADMIN DASHBOARD -->
+  <section id="adminPage" class="page hidden">
+    <div class="dashboard-wrapper">
+      
+      <div class="dashboard-banner glass-card admin-banner">
+        <div class="banner-left">
+          <span class="welcome-tag admin-tag">Administrative Center</span>
+          <h2 class="banner-greeting">Leave Management Control Panel</h2>
+          <p class="banner-desc">Review employee leave applications with Human-in-the-Loop AI recommendations.</p>
+        </div>
+        
+        <div class="banner-actions">
+          <button type="button" class="btn btn-glass" onclick="toggleAnalytics()">
+            <span>Analytics Agent</span>
+          </button>
+          <button type="button" class="btn btn-glass" onclick="toggleAuditLog()">
+            <span>Audit Trail</span>
+          </button>
+          <button type="button" class="btn btn-danger-glass" onclick="clearAllRequests()">
+            <span>Clear All</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ANALYTICS & REPORTING AGENT -->
+      <div class="analytics-panel glass-card hidden" id="analyticsPanel">
+        <div class="panel-header">
+          <div>
+            <h3 class="panel-title">AI Analytics and Reporting Agent</h3>
+            <p class="panel-sub">Real-time metrics, approval ratios, and AI confidence monitoring</p>
+          </div>
+          <button type="button" class="btn-close-sm" onclick="toggleAnalytics()">X</button>
+        </div>
+
+        <div class="analytics-grid" id="analyticsGrid"></div>
+
+        <div class="chart-block">
+          <h4 class="chart-title">Leave Request Distribution by Category</h4>
+          <div id="typeChart" class="bar-chart"></div>
+        </div>
+      </div>
+
+      <!-- GLOBAL AUDIT TRAIL PANEL -->
+      <div class="audit-log-panel glass-card hidden" id="auditLogPanel">
+        <div class="panel-header">
+          <div>
+            <h3 class="panel-title">System-Wide Audit Trail</h3>
+            <p class="panel-sub">Immutable chronological ledger of all leave decisions and submissions</p>
+          </div>
+          <button type="button" class="btn-close-sm" onclick="toggleAuditLog()">X</button>
+        </div>
+
+        <div id="globalAuditList" class="audit-log-list"></div>
+      </div>
+
+      <!-- Admin Requests Queue -->
+      <div class="glass-card admin-requests-card">
+        <div class="card-header justify-between">
+          <div>
+            <h3 class="card-title">Employee Leave Applications Queue</h3>
+            <p class="card-subtitle">AI Recommendation Agent assists decision-making with confidence scoring</p>
+          </div>
+          <div class="filter-pills" id="adminFilterPills">
+            <button type="button" class="filter-btn active" onclick="filterAdminLeaves('all')">All Requests</button>
+            <button type="button" class="filter-btn" onclick="filterAdminLeaves('pending')">Pending Action</button>
+            <button type="button" class="filter-btn" onclick="filterAdminLeaves('approved')">Approved</button>
+            <button type="button" class="filter-btn" onclick="filterAdminLeaves('rejected')">Rejected</button>
+          </div>
+        </div>
+
+        <div id="adminEmptyState" class="empty-state hidden">
+          <h4>No leave applications pending</h4>
+          <p>All employee leave requests have been reviewed or no applications exist currently.</p>
+        </div>
+
+        <div id="adminLeaveList" class="admin-cards-container"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MODAL 1: PROJECT OVERVIEW (OVERVIEW BUTTON) -->
+  <div class="modal-backdrop hidden" id="overviewModal" onclick="closeOverviewModal(event)">
+    <div class="modal-card glass-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">LeaveMate — Project Overview</h3>
+          <p style="font-size:0.82rem; color:#94a3b8; margin-top:2px;">Automated Enterprise AI Leave Workflow Architecture</p>
+        </div>
+        <button type="button" class="btn-close-sm" onclick="closeOverviewModal()">X</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>LeaveMate</strong> is a modern work-life balance platform designed for enterprise organizations. It replaces traditional manual leave approvals with an automated multi-agent AI framework:</p>
+        
+        <div class="modal-feature-list">
+          <div class="feature-item">
+            <div class="feature-bullet"></div>
+            <div>
+              <strong style="color:#ffffff;">1. Intelligent Validation Agent:</strong>
+              <p style="margin-top:2px; font-size:0.82rem; color:#cbd5e1;">Evaluates leave requests against company policy, checks duration limits, detects scheduling overlaps, and verifies semantic keywords with Explainable AI confidence scores.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-bullet" style="background:#f59e0b; box-shadow:0 0 8px rgba(245,158,11,0.6);"></div>
+            <div>
+              <strong style="color:#ffffff;">2. Approval Recommendation Agent (Human-in-the-Loop):</strong>
+              <p style="margin-top:2px; font-size:0.82rem; color:#cbd5e1;">Suggests Approve, Review, or Reject based on category priority weighting while keeping the ultimate decision power in the hands of authorized HR administrators.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-bullet" style="background:#10b981; box-shadow:0 0 8px rgba(168,85,247,0.6);"></div>
+            <div>
+              <strong style="color:#ffffff;">3. Real-Time Analytics &amp; Reporting Agent:</strong>
+              <p style="margin-top:2px; font-size:0.82rem; color:#cbd5e1;">Calculates organizational absence rates, approval ratios, and dynamic distribution bar charts across all leave types.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-bullet" style="background:#a855f7; box-shadow:0 0 8px rgba(168,85,247,0.6);"></div>
+            <div>
+              <strong style="color:#ffffff;">4. Immutable Audit Trail:</strong>
+              <p style="margin-top:2px; font-size:0.82rem; color:#cbd5e1;">Logs every submission, withdrawal, approval, and rejection with timestamps and user identifiers for enterprise accountability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeOverviewModal()">Close Overview</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ABOUT MODAL -->
+  <div class="modal-backdrop hidden" id="aboutModal" onclick="closeAboutModal(event)">
+    <div class="modal-card glass-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">About LeaveMate</h3>
+        <button type="button" class="btn-close-sm" onclick="closeAboutModal()">X</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>LeaveMate</strong> combines refreshing employee-first design with a multi-agent AI architecture for modern enterprise HR workflows.</p>
+        <p style="margin-top: 10px;">Designed to help employees enjoy their earned time off while giving administrators clarity, confidence, and intelligent tooling.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeAboutModal()">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
